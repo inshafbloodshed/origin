@@ -1,3 +1,4 @@
+// middleware/auth.js
 const authMiddleware = (req, res, next) => {
     const token = req.header('x-auth-token');
     
@@ -8,10 +9,18 @@ const authMiddleware = (req, res, next) => {
     }
     
     try {
+        // For mock JWT tokens
         if (token.startsWith('mock-jwt-token')) {
             req.user = { id: 1, username: 'admin' };
             return next();
         }
+        
+        // Verify real JWT token if you have one
+        // const jwt = require('jsonwebtoken');
+        // const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
+        // req.user = decoded;
+        
+        req.user = { id: 1, username: 'admin' };
         next();
     } catch (error) {
         console.error('Auth error:', error);

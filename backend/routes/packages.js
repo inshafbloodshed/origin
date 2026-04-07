@@ -13,8 +13,12 @@ let mockPackages = [
 router.get('/', async (req, res) => {
     try {
         const pool = await getConnection();
-        const result = await pool.request().query('SELECT * FROM Packages ORDER BY id');
-        res.json(result.recordset);
+        if (pool) {
+            const result = await pool.request().query('SELECT * FROM Packages ORDER BY id');
+            res.json(result.recordset);
+        } else {
+            res.json(mockPackages);
+        }
     } catch (error) {
         console.error('Error fetching packages:', error);
         res.json(mockPackages);
@@ -25,24 +29,28 @@ router.post('/', authMiddleware, async (req, res) => {
     try {
         const { title, description, price, image_url, category } = req.body;
         const pool = await getConnection();
-        const result = await pool.request()
-            .input('title', sql.NVarChar, title)
-            .input('description', sql.NVarChar, description)
-            .input('price', sql.Decimal, price)
-            .input('image_url', sql.NVarChar, image_url)
-            .input('category', sql.NVarChar, category)
-            .query(`
-                INSERT INTO Packages (title, description, price, image_url, category) 
-                VALUES (@title, @description, @price, @image_url, @category);
-                SELECT SCOPE_IDENTITY() AS id
-            `);
-        res.status(201).json({ id: result.recordset[0].id, message: 'Package created' });
+        
+        if (pool) {
+            const result = await pool.request()
+                .input('title', sql.NVarChar, title)
+                .input('description', sql.NVarChar, description)
+                .input('price', sql.Decimal, price)
+                .input('image_url', sql.NVarChar, image_url)
+                .input('category', sql.NVarChar, category)
+                .query(`
+                    INSERT INTO Packages (title, description, price, image_url, category) 
+                    VALUES (@title, @description, @price, @image_url, @category);
+                    SELECT SCOPE_IDENTITY() AS id
+                `);
+            res.status(201).json({ id: result.recordset[0].id, message: 'Package created' });
+        } else {
+            const newPackage = { id: mockPackages.length + 1, title, description, price, image_url, category };
+            mockPackages.push(newPackage);
+            res.status(201).json(newPackage);
+        }
     } catch (error) {
         console.error('Error creating package:', error);
-        const { title, description, price, image_url, category } = req.body;
-        const newPackage = { id: mockPackages.length + 1, title, description, price, image_url, category };
-        mockPackages.push(newPackage);
-        res.status(201).json(newPackage);
+        res.status(500).json({ message: 'Error creating package' });
     }
 });
 
@@ -51,19 +59,30 @@ router.put('/:id', authMiddleware, async (req, res) => {
         const { id } = req.params;
         const { title, description, price, image_url, category } = req.body;
         const pool = await getConnection();
-        await pool.request()
-            .input('id', sql.Int, id)
-            .input('title', sql.NVarChar, title)
-            .input('description', sql.NVarChar, description)
-            .input('price', sql.Decimal, price)
-            .input('image_url', sql.NVarChar, image_url)
-            .input('category', sql.NVarChar, category)
-            .query(`
-                UPDATE Packages 
-                SET title = @title, description = @description, price = @price, 
-                    image_url = @image_url, category = @category, updated_at = GETDATE() 
-                WHERE id = @id
-            `);
+        
+        if (pool) {
+            await pool.request()
+                .input('id', sql.Int, id)
+                .input('title', sql.NVarChar, title)
+                .input('description', sql.NVarChar, description)
+                .input('price', sql.Decimal, price)
+                .input('image_url', sql.NVarChar, image_url)
+                .input('category', sql.NVarChar, category)
+                .query(`
+                    UPDATE Packages 
+                    SET title = @title, description = @description, price = @price, 
+                        image_url = @image_url, category = @category, updated_at = GETDATE() 
+                    WHERE id = @id
+                `);
+        } else {
+            const index = mockPackages.findIndex(p => p.id === parseInt(id));
+            if (index !== -1) {
+                mockPackages[index] = { ...mockPackages[index], title, description, price, image_url, category };
+            } else {
+                return res.status(404).json({ message: 'Package not found' });
+            }
+        }
+        
         res.json({ message: 'Package updated' });
     } catch (error) {
         console.error('Error updating package:', error);
@@ -75,9 +94,20 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
         const pool = await getConnection();
-        await pool.request()
-            .input('id', sql.Int, id)
-            .query('DELETE FROM Packages WHERE id = @id');
+        
+        if (pool) {
+            await pool.request()
+                .input('id', sql.Int, id)
+                .query('DELETE FROM Packages WHERE id = @id');
+        } else {
+            const index = mockPackages.findIndex(p => p.id === parseInt(id));
+            if (index !== -1) {
+                mockPackages.splice(index, 1);
+            } else {
+                return res.status(404).json({ message: 'Package not found' });
+            }
+        }
+        
         res.json({ message: 'Package deleted' });
     } catch (error) {
         console.error('Error deleting package:', error);
