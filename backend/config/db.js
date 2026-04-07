@@ -1,50 +1,57 @@
 const sql = require('mssql');
+const dotenv = require('dotenv');
 
-// Database configuration
-const config = {
-    user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || 'Inshaf22.',
-    server: process.env.DB_SERVER || 'DESKTOP-86QTNGL',
-    database: process.env.DB_NAME || 'LuxeLanka',
-    port: parseInt(process.env.DB_PORT) || 1433,
+dotenv.config();
+
+const dbConfig = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    server: process.env.DB_SERVER,
+    database: process.env.DB_NAME,
     options: {
-        encrypt: false,
-        trustServerCertificate: true,
-        enableArithAbort: true
+        encrypt: true,
+        enableArithAbort: true,
+        trustServerCertificate: false,
+        connectTimeout: 30000,
+        requestTimeout: 30000
+    },
+    pool: {
+        max: 1,
+        min: 0,
+        idleTimeoutMillis: 30000
     }
 };
 
 let pool = null;
 
-// Get database connection
 async function getConnection() {
     try {
         if (pool && pool.connected) {
             return pool;
         }
         
-        console.log(`📡 Connecting to SQL Server at ${config.server}...`);
-        pool = await sql.connect(config);
-        console.log('✅ Connected to SQL Server successfully');
-        console.log(`📊 Using database: ${config.database}`);
+        pool = await sql.connect(dbConfig);
+        console.log('✅ Database connected successfully');
         return pool;
     } catch (error) {
-        console.error('❌ Database connection error:', error.message);
+        console.error('❌ Database connection failed:', error.message);
         throw error;
     }
 }
 
-// Test connection
 async function testConnection() {
     try {
-        const pool = await getConnection();
-        const result = await pool.request().query('SELECT @@VERSION as version');
-        console.log('✅ Connection test successful');
-        return true;
+        const connection = await getConnection();
+        const result = await connection.request().query('SELECT 1 as test');
+        return result.recordset.length > 0;
     } catch (error) {
-        console.error('❌ Connection test failed:', error.message);
+        console.error('Database test failed:', error.message);
         return false;
     }
 }
 
-module.exports = { getConnection, sql, testConnection };
+module.exports = {
+    getConnection,
+    testConnection,
+    sql
+};
