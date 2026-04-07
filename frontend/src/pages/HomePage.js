@@ -159,8 +159,8 @@ function HomePage() {
             <nav className="glass-nav">
                 <div className="nav-container">
                     <div className="logo">
-                        <img src="/Emojii.png" alt="emoji" className="logo-emoji" 
-                        style={{ width: "60px", height: "60px", verticalAlign: "middle" }}/>                        Zayaan Tours SriLanka
+                        <img src="/Emojii.png" alt="emoji" className="logo-emoji"
+                            style={{ width: "60px", height: "60px", verticalAlign: "middle" }} />                        Zayaan Tours SriLanka
                     </div>                    <button className="menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                         <i className="fas fa-bars"></i>
                     </button>
@@ -246,6 +246,27 @@ function HomePage() {
                                 View Packages <i className="fas fa-arrow-right"></i>
                             </button>
                         </div>
+
+
+                        <div className="About" style={{ minHeight: "50vh" }}>
+                            <h1>Ayubowan! Welcome to SriLanka</h1>
+                            <p><center>   We're thrilled to have you here. From stunning beaches to rich culture We're excited for you to experience our island!s beauty: Were here to make your stay unforgettable!
+
+                                Srilanka - a tropical paradise Located in the indian Dlean, this tiny island nation is a treasure landscapes,
+                                trove of stunning
+                                i rich culture, and warm hospitality. From the misty hills of Nuwara Eliya to the golden beaches of Mirissa, Srilanka is a heaven for travelers.
+                            </center> </p>
+
+
+                            <div className="country-images">
+                                <img src="https://flagcdn.com/w320/us.png" alt="USA" />
+                                <img src="https://flagcdn.com/w320/fr.png" alt="France" />
+                                <img src="https://flagcdn.com/w320/it.png" alt="Italy" />
+                                <img src="https://flagcdn.com/w320/mx.png" alt="Mexico" />
+                            </div>
+                        </div>
+
+
 
                         <div className="video-section">
                             <h2 className="section-title">

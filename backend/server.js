@@ -1292,7 +1292,7 @@ app.use((err, req, res, next) => {
 initializeDatabase().then(() => {
     app.listen(PORT, () => {
         console.log('\n' + '='.repeat(50));
-        console.log(`✅ Server running on http://localhost:${PORT}`);
+        
         console.log(`📊 Database status: ${dbConnected ? 'Connected to SQL Server' : 'Using mock data'}`);
         console.log('='.repeat(50) + '\n');
 

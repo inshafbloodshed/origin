@@ -163,6 +163,44 @@ body {
     align-items: center;
 }
 
+.About {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+    background-size: 100%;
+    background-position: center 10%;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(12px);
+    border-radius: 48px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 123, 44, 0.35);
+    margin-bottom: 2rem;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.country-images {
+  display: flex;
+  justify-content: center;   /* center horizontally */
+  align-items: center;
+  gap: 20px;                 /* space between images */
+  margin-top: 20px;
+  flex-wrap: wrap;           /* responsive (wrap on small screens) */
+}
+
+.country-images img {
+  width: 100px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.About P{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.6rem;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+}
 .hero h1 {
     font-size: 2.2rem;
     color: #f1f1f1;
@@ -176,7 +214,7 @@ body {
 }
 
 .btn-glass-round {
-    background: rgba(238, 235, 233, 0.9);
+    background: rgba(248, 120, 0, 0.9);
     backdrop-filter: blur(8px);
     border: none;
     padding: 12px 32px;
@@ -191,6 +229,7 @@ body {
 
 .btn-glass-round:hover {
     transform: translateY(-2px);
+
     background: #ff7b2c;
     box-shadow: 0 5px 15px rgba(255, 123, 44, 0.3);
 }
@@ -295,7 +334,7 @@ body {
 .video-glass-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    
+
 }
 
 .video-glass-card iframe {
@@ -819,7 +858,7 @@ textarea {
 /* Reviews Section */
 .reviews-list {
     /* Increase this value to add more gap (e.g., 4rem or 60px) */
-    margin-bottom: 4rem; 
+    margin-bottom: 4rem;
 }
 
 /* Optional: You can also add a top margin to the form for extra insurance */
@@ -925,7 +964,8 @@ footer {
 /* Responsive Design */
 @media (max-width: 768px) {
     .menu-toggle {
-        display: none; /* Hide hamburger menu for horizontal scroll nav */
+        display: none;
+        /* Hide hamburger menu for horizontal scroll nav */
     }
 
     .nav-scroll-wrapper {
@@ -967,17 +1007,21 @@ footer {
     }
 
     .nav-buttons-wrapper {
-        width: 300px; /* Show approximately 3 buttons */
+        width: 300px;
+        /* Show approximately 3 buttons */
         overflow-x: auto;
         overflow-y: hidden;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE and Edge */
         scroll-behavior: smooth;
         flex: none;
     }
 
     .nav-buttons-wrapper::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, and Opera */
+        display: none;
+        /* Chrome, Safari, and Opera */
     }
 
     .nav-links {
@@ -1029,7 +1073,7 @@ footer {
     .quick-btn {
         justify-content: center;
     }
-    
+
 }
 
 
