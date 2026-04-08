@@ -1288,6 +1288,7 @@ app.use((err, req, res, next) => {
     });
 });
 
+
 // Start server
 initializeDatabase().then(() => {
     app.listen(PORT, () => {
@@ -1351,3 +1352,6 @@ initializeDatabase().then(() => {
         console.log('   - https://www.youtube.com/shorts/VIDEO_ID\n');
     });
 });
+if (process.env.VERCEL) {
+    module.exports = app;
+}
